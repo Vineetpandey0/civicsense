@@ -170,6 +170,7 @@ function LoginPage() {
             // ✅ set login details in Zustand store
             const setLogin = useAuthStore.getState().setLogin;
             setLogin({
+                id: official._id.toString(),
                 email: official.email,
                 govId: official.gov_id,
                 token,

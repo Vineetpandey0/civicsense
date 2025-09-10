@@ -69,7 +69,11 @@ const complaintSchema = new Schema({
     upvotes: { 
         type: Number, 
         default: 0 
-    }
+    },
+    assigned_to: { 
+        type: Schema.Types.ObjectId, 
+        ref: "officials"
+    },
 }, { timestamps: true });
 
 const Complaint = mongoose.models.complaints || mongoose.model("complaints", complaintSchema);
