@@ -62,73 +62,93 @@ function LoginPage() {
     }
 
     const passwordSet = async () => {
+  try {
+    setLoading(true);
+
+    let lat: number, lng: number, accuracy: number | null = null;
+
+    // Step 1: Try Google Geolocation API first
     try {
-        setLoading(true);
-
-        let lat: number, lng: number;
-
-        // Step 1: Try Google Geolocation API first
-        try {
-            const googleRes = await fetch(
-                `https://www.googleapis.com/geolocation/v1/geolocate?key=${process.env.NEXT_PUBLIC_GOOGLE_API_KEY}`,
-                {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ considerIp: "true" }),
-                }
-            );
-            const googleData = await googleRes.json();
-            lat = googleData.location.lat;
-            lng = googleData.location.lng;
-            console.log("Google API Lat:", lat, "Lng:", lng, "Accuracy:", googleData.accuracy);
-        } catch (googleError) {
-            console.warn("Google API failed, trying GPS:", googleError);
-
-            try {
-                // Step 2: Fallback to GPS
-                const position = await new Promise<GeolocationPosition>((resolve, reject) =>
-                    navigator.geolocation.getCurrentPosition(resolve, reject, { enableHighAccuracy: true })
-                );
-                lat = position.coords.latitude;
-                lng = position.coords.longitude;
-                console.log("GPS Lat:", lat, "Lng:", lng);
-            } catch (gpsError) {
-                console.warn("GPS failed, falling back to IP API:", gpsError);
-
-                // Step 3: Final fallback → IP API
-                const ipRes = await fetch("https://ipapi.co/json/");
-                const ipData = await ipRes.json();
-                lat = ipData.latitude;
-                lng = ipData.longitude;
-                console.log("IP-based Lat:", lat, "Lng:", lng);
-            }
+      const googleRes = await fetch(
+        `https://www.googleapis.com/geolocation/v1/geolocate?key=${process.env.NEXT_PUBLIC_GOOGLE_API_KEY}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ considerIp: "true" }),
         }
+      );
 
-        // Step 4: Build location
-        const updatedLocation = {
-            type: "Point",
-            coordinates: [lng, lat], // [lng, lat] for MongoDB
-            geohash: ngeohash.encode(lat, lng),
-        };
+      const googleData = await googleRes.json();
+      if (googleData.location) {
+        lat = googleData.location.lat;
+        lng = googleData.location.lng;
+        accuracy = googleData.accuracy;
+        console.log(
+          `✅ Google API: Lat=${lat}, Lng=${lng}, Accuracy=${accuracy}m`
+        );
+      } else {
+        throw new Error("Google API did not return location");
+      }
+    } catch (googleError) {
+      console.warn("Google API failed, trying GPS:", googleError);
 
-        // Step 5: Send to backend
-        const response = await axios.post("/api/login/setPassword", {
-            email,
-            govId,
-            password,
-            location: updatedLocation,
-        });
+      try {
+        // Step 2: Fallback to GPS (watchPosition style, single fix)
+        const position = await new Promise<GeolocationPosition>(
+          (resolve, reject) =>
+            navigator.geolocation.getCurrentPosition(resolve, reject, {
+              enableHighAccuracy: true,
+              timeout: 20000,
+              maximumAge: 0,
+            })
+        );
 
-        console.log("Backend Response:", response.data);
-        toast.success("Password set successfully! Now Login using credentials", { duration: 5000 });
-        router.push("/login");
-    } catch (error: any) {
-        console.error("Error in passwordSet:", error.message);
-        toast.error("Unable to set password. Please try again.", { duration: 3000 });
-    } finally {
-        setLoading(false);
-        setPassword("");
+        lat = position.coords.latitude;
+        lng = position.coords.longitude;
+        accuracy = position.coords.accuracy;
+        console.log(`✅ GPS: Lat=${lat}, Lng=${lng}, Accuracy=${accuracy}m`);
+      } catch (gpsError) {
+        console.warn("GPS failed, falling back to IP API:", gpsError);
+
+        // Step 3: Final fallback → IP API
+        const ipRes = await fetch("https://ipapi.co/json/");
+        const ipData = await ipRes.json();
+        lat = ipData.latitude;
+        lng = ipData.longitude;
+        accuracy = null;
+        console.log(`🌐 IP-based: Lat=${lat}, Lng=${lng}`);
+      }
     }
+
+    // Step 4: Build location object
+    const updatedLocation = {
+      type: "Point",
+      coordinates: [lng, lat], // MongoDB expects [lng, lat]
+      geohash: ngeohash.encode(lat, lng),
+      accuracy,
+      timestamp: new Date().toISOString(),
+    };
+
+    // Step 5: Send to backend
+    const response = await axios.post("/api/login/setPassword", {
+      email,
+      govId,
+      password,
+      location: updatedLocation,
+    });
+
+    console.log("Backend Response:", response.data);
+    toast.success("Password set successfully! Now Login using credentials", {
+      duration: 5000,
+    });
+    router.push("/login");
+  } catch (error: any) {
+    console.error("Error in passwordSet:", error.message);
+    toast.error("Unable to set password. Please try again.", { duration: 3000 });
+  } finally {
+    setLoading(false);
+    setPassword("");
+  }
 };
 
 
