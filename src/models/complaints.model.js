@@ -21,10 +21,10 @@ const complaintSchema = new Schema({
         enum: ["pothole", "garbage", "streetlight", "water", "roads", "other"], 
         required: true 
     },
-    images: [{ 
+    images: [[{ 
         type: String, 
         trim: true 
-    }],
+    }]],
     videos: [{ 
         type: String, 
         trim: true 
@@ -73,6 +73,10 @@ const complaintSchema = new Schema({
     assigned_to: { 
         type: Schema.Types.ObjectId, 
         ref: "officials"
+    },
+    due_date: { 
+        type: Date,
+        default: new Date(Date.now() + 20*24*60*60*1000) // Default due date is 20 days from now
     },
 }, { timestamps: true });
 

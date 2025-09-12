@@ -19,13 +19,13 @@ function Footer() {
         </div>
 
         {/* Quick Links */}
-        <div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-3">Quick Links</h3>
+        <div className="ml-16">
+          <h3 className="text-lg font-semibold text-gray-900 mb-3 ">Quick Links</h3>
           <ul className="space-y-2 text-sm">
-            <li><Link href="/" className="hover:text-green-600">Home</Link></li>
+            <li><Link href="/dashboard" className="hover:text-green-600">Dashboard</Link></li>
             <li><Link href="/complaints" className="hover:text-green-600">File Complaint</Link></li>
             <li><Link href="/officials" className="hover:text-green-600">For Officials</Link></li>
-            <li><Link href="/about" className="hover:text-green-600">About Us</Link></li>
+            <li><Link href="/profile" className="hover:text-green-600">Profile</Link></li>
           </ul>
         </div>
 
@@ -33,10 +33,10 @@ function Footer() {
         <div>
           <h3 className="text-lg font-semibold text-gray-900 mb-3">Help & Support</h3>
           <ul className="space-y-2 text-sm">
-            <li><Link href="/faq" className="hover:text-green-600">FAQs</Link></li>
-            <li><Link href="/support" className="hover:text-green-600">Contact Support</Link></li>
-            <li><Link href="/privacy" className="hover:text-green-600">Privacy Policy</Link></li>
-            <li><Link href="/terms" className="hover:text-green-600">Terms & Conditions</Link></li>
+            <li><Link href="#" className="hover:text-green-600">FAQs</Link></li>
+            <li><Link href="#" className="hover:text-green-600">Contact Support</Link></li>
+            <li><Link href="#" className="hover:text-green-600">Privacy Policy</Link></li>
+            <li><Link href="#" className="hover:text-green-600">Terms & Conditions</Link></li>
           </ul>
         </div>
       </div>

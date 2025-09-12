@@ -35,6 +35,7 @@ function LoginPage() {
         if(email.length > 0 && govId.length > 0) setIsButtonDisabled(false)
     }, [email, govId])
 
+   
 
     const login = async () => {
         try {
@@ -171,6 +172,7 @@ function LoginPage() {
             const setLogin = useAuthStore.getState().setLogin;
             setLogin({
                 id: official._id.toString(),
+                name: official.name,
                 email: official.email,
                 govId: official.gov_id,
                 token,
@@ -182,7 +184,7 @@ function LoginPage() {
             });
 
             toast.success("Login successful!", { duration: 3000 });
-            router.push('/dashboard')
+            router.push('/complaints')
             } else {
             toast.error("Login failed. Please check your credentials.", {
                 duration: 3000,
@@ -199,10 +201,10 @@ function LoginPage() {
     };
 
     return (
-        <div className="min-h-screen w-screen flex flex-col  items-center">
+        <div className="p-20 w-screen flex justify-center gap-6  items-center">
 
             {!canSetPassword && !canLogin && (
-                <Card className="sm:w-1/3 w-full mt-20 text-center sm:shadow-xl shadow-none border-none ">
+                <Card className="sm:w-1/3 w-full  text-center sm:shadow-xl shadow-none border-none ">
                     <CardHeader>
                         <CardTitle className="text-3xl m-2">Login to your account</CardTitle>
                         <CardDescription>
@@ -259,7 +261,7 @@ function LoginPage() {
             )}
 
             {canSetPassword && !canLogin && (
-                <Card className="sm:w-1/3 w-full mt-20 text-center sm:shadow-xl shadow-none border-none ">
+                <Card className="sm:w-1/3 w-full  text-center sm:shadow-xl shadow-none border-none ">
                     <CardHeader>
                         <CardTitle className="text-3xl m-2">Set a password</CardTitle>
                         
@@ -326,7 +328,7 @@ function LoginPage() {
             )}
 
             {canLogin && !canSetPassword && (
-                <Card className="sm:w-1/3 w-full mt-20 text-center sm:shadow-xl shadow-none border-none ">
+                <Card className="sm:w-1/3 w-full   text-center sm:shadow-xl shadow-none border-none ">
                     <CardHeader>
                         <CardTitle className="text-3xl m-2">Login to your account</CardTitle>
                         <CardDescription>
@@ -398,6 +400,19 @@ function LoginPage() {
                     </CardFooter>
                 </Card>
             )}
+
+            <p className="text-gray-600 text-sm leading-relaxed space-y-2">
+                <span className="block font-semibold text-gray-800">How to Login / लॉगिन कैसे करें?</span>
+                <br />
+                1️⃣ Enter your <b>Government ID (GovID)</b> <span className="text-gray-500">/ अपना सरकारी आईडी डालें</span>
+                <br />
+                2️⃣ Use your <b>Official Email</b> <span className="text-gray-500">/ आधिकारिक ईमेल डालें</span>
+                <br />
+                3️⃣ Set a secure <b>Password</b> <span className="text-gray-500">/ पासवर्ड सेट करें</span>
+                <br />
+                ✅ Keep these details safe <span className="text-gray-500">/ इन्हें सुरक्षित रखें</span>
+            </p>
+
 
         </div>
     )

@@ -11,6 +11,7 @@ interface Location {
 
 interface AuthState {
   id: string;
+  name: string;
   email: string;
   govId: string;
   token: string | null;
@@ -22,6 +23,7 @@ interface AuthState {
 
   setLogin: (data: {
     id: string;
+    name: string;
     email: string;
     govId: string;
     token: string;
@@ -39,6 +41,7 @@ export const useAuthStore = create<AuthState>()(
   persist(
     immer((set) => ({
       id: "",
+      name: "",
       email: "",
       govId: "",
       token: null,
@@ -51,6 +54,7 @@ export const useAuthStore = create<AuthState>()(
       setLogin: (data) =>
         set((state) => {
           state.id = data.id;
+          state.name = data.name;
           state.email = data.email;
           state.govId = data.govId;
           state.token = data.token;
@@ -64,6 +68,7 @@ export const useAuthStore = create<AuthState>()(
       logout: () =>
         set((state) => {
           state.id = "";
+          state.name = "";
           state.email = "";
           state.govId = "";
           state.token = null;

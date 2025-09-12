@@ -20,7 +20,7 @@ const assignmentSchema = new Schema({
     },
     status: { 
         type: String, 
-        enum: ["open", "overdue", "closed"], 
+        enum: ["Pending", "Acknowledged", "In Progress", "Resolved"], 
         default: "open" 
     }
 }, { timestamps: true });

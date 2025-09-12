@@ -1,0 +1,28 @@
+/* components/LoadingSpinner.module.css */
+
+.spinnerContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* This centers the spinner on the page */
+  width: 100%;
+}
+
+.spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-radius: 2px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border-left-color: white; /* A nice blue color for the rotating part */
+  animation: spin 1s ease infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

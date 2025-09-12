@@ -1,55 +1,76 @@
 "use client"
 
-import { Bell } from 'lucide-react'
-import Link from 'next/link'
-import React from 'react'
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { Button } from '@/components/ui/button'
-import { Menu } from 'lucide-react'
+import {  HandHelping, Menu } from "lucide-react"
+import Link from "next/link"
+import React from "react"
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
+import { Button } from "@/components/ui/button"
+import { usePathname } from "next/navigation"  // for active route
 
 function Navbar() {
+  const pathname = usePathname()
+
+  const navItems = [
+    { href: "/dashboard", label: "Dashboard" },
+    { href: "/complaints", label: "Complaints" },
+    { href: "/profile", label: "Profile" },
+  ]
+
   return (
-    <div className='sm:p-6 p-4 flex w-full justify-between'>
-        <div className='flex items-center justify-center gap-2'>
-            <Bell className='sm:size-8 '/>
-            <h1 className='sm:text-3xl text-xl font-bold '>CIVICSENSE</h1>
-        </div>
-        <nav>
-            <ul className='sm:flex hidden space-x-4 text-gray-500'>
-                <li>
-                    <Link href="#" className='text-lg hover:text-black transition:transform duration-300'>Dashboard</Link>
-                </li>
-                <li>
-                    <Link href="#" className='text-lg hover:text-black transition:transform duration-300'>Complaints</Link>
-                </li>
-                <li>
-                    <Link href="#" className='text-lg hover:text-black transition:transform duration-300'>Reports</Link>
-                </li>
-                <li>
-                    <Link href="#" className='text-lg hover:text-black transition:transform duration-300'>Profile</Link>
-                </li>
-            </ul>
-            <Sheet>
-                <SheetTrigger asChild>
-                    <Button variant="outline" className="sm:hidden ">
-                    <Menu className='size-6'/>
-                    </Button>
-                </SheetTrigger>
-                <SheetContent side="left" className="w-64 p-4">
-                    <div className="flex flex-col gap-4">
-                    <h2 className="text-lg font-bold">Menu</h2>
-                    <nav className="flex flex-col gap-2">
-                        <Link href="/dashboard" className="hover:text-green-600">Dashboard</Link>
-                        <Link href="/complaints" className="hover:text-green-600">Complaints</Link>
-                        <Link href="/analytics" className="hover:text-green-600">Analytics</Link>
-                        <Link href="/profile" className="hover:text-green-600">Profile</Link>
-                        <Link href="/settings" className="hover:text-green-600">Settings</Link>
-                    </nav>
-                    </div>
-                </SheetContent>
-            </Sheet>
-        </nav>
-    </div>
+    <header className="flex items-center justify-between whitespace-nowrap border-b border-gray-200 px-6 py-6 bg-white shadow-sm">
+      {/* Left Section (Logo + Brand) */}
+      <div className="flex items-center gap-3">
+        <HandHelping className="size-8 text-purple-500" />
+        <h1 className="text-lg sm:text-xl font-bold text-gray-900 tracking-tight">Naagrik Sahayak</h1>
+      </div>
+
+      {/* Desktop Nav */}
+      <nav className="hidden sm:flex items-center gap-6 text-md font-medium">
+        {navItems.map((item) => (
+          <Link
+            key={item.href}
+            href={item.href}
+            className={`transition-colors ${
+              pathname === item.href
+                ? "text-gray-900 font-semibold border-b-2 border-green-500 pb-1"
+                : "text-gray-500 hover:text-gray-900"
+            }`}
+          >
+            {item.label}
+          </Link>
+        ))}
+      </nav>
+
+      {/* Right Section (Mobile Menu Trigger) */}
+      <Sheet>
+        <SheetTrigger asChild>
+          <Button variant="outline" size="icon" className="sm:hidden">
+            <Menu className="size-6" />
+          </Button>
+        </SheetTrigger>
+        <SheetContent side="left" className="w-64 p-4">
+          <SheetHeader>
+            <SheetTitle className="text-lg font-bold text-gray-900">Menu</SheetTitle>
+          </SheetHeader>
+          <nav className="mt-4 flex flex-col gap-3 text-gray-700">
+            {navItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`${
+                  pathname === item.href ? "text-green-600 font-semibold" : "hover:text-green-600"
+                }`}
+              >
+                {item.label}
+              </Link>
+            ))}
+            <Link href="/profile" className="hover:text-green-600">
+              Profile
+            </Link>
+          </nav>
+        </SheetContent>
+      </Sheet>
+    </header>
   )
 }
 
