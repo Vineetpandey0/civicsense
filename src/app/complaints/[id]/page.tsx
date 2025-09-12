@@ -250,8 +250,8 @@ export default function ComplaintDetails() {
                   </h3>
                   <div className="flow-root">
                     <ul className="-mb-8" role="list">
-                      {currentLog?.note?.length > 0 ? (
-                        currentLog.note.map((log: any, idx: number) => {
+                      {currentLog?.note?.length ? (
+                        (currentLog.note || []).map((log: any, idx: number) => {
                           // Choose icon + color based on status
                           let icon, bgColor;
                           switch (log.status) {
