@@ -50,6 +50,7 @@ import LoadingSpinner from "@/components/components/LoadingSpinner";
 import { useEscalationLogStore } from "@/store/escalationLog";
 
 export default function ComplaintDetails() {
+  type ComplaintStatus = "Pending" | "Acknowledged" | "In Progress" | "Resolved";
   const { id } = useParams(); // dynamic route param
   const complaints = useComplaintStore((state) => state.complaints);
   const updateComplaintStatus = useComplaintStore(
@@ -95,7 +96,7 @@ export default function ComplaintDetails() {
         `/api/complaints/${complaint._id}/updateStatus`,
         { status, id, note }
       );
-      updateComplaintStatus(id as string, status);
+      updateComplaintStatus(id as string, status as ComplaintStatus);
       console.log(response.data);
       clearEscalationLogs();
       setEscalationLogs(response.data.escalationLogs);
