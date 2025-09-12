@@ -95,7 +95,7 @@ export default function ComplaintDetails() {
         `/api/complaints/${complaint._id}/updateStatus`,
         { status, id, note }
       );
-      updateComplaintStatus(id, status);
+      updateComplaintStatus(id as string, status);
       console.log(response.data);
       clearEscalationLogs();
       setEscalationLogs(response.data.escalationLogs);
