@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useRouter } from "next/navigation";
 import { useComplaintStore } from "@/store/complaintStore";
+import { useEscalationLogStore } from "@/store/escalationLog";
 
 function Profile() {
   const name = useAuthStore((state) => state.name);
@@ -15,11 +16,11 @@ function Profile() {
 
   const logout = useAuthStore((state) => state.logout);
   const clearComplaints = useComplaintStore((state) => state.clearComplaints);
+  const clearEscalationLogs = useEscalationLogStore((state) => state.clearEscalationLogs);
   const router = useRouter();
 
   const logoutUser = () => {
     logout();
-    clearComplaints();
     router.push("/login");
   }
 

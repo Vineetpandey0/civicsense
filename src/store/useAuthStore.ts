@@ -65,7 +65,7 @@ export const useAuthStore = create<AuthState>()(
           state.location = data.location;
         }),
 
-      logout: () =>
+      logout: async () => {
         set((state) => {
           state.id = "";
           state.name = "";
@@ -78,6 +78,18 @@ export const useAuthStore = create<AuthState>()(
           state.last_login = null;
           state.location = undefined;
         }),
+        localStorage.removeItem("auth-storage");
+        localStorage.removeItem("complaints-storage");
+        localStorage.removeItem("escalation-log-storage");
+
+        try {
+          await fetch("/api/logout", {
+            method: "POST",
+          });
+        } catch (err) {
+          console.error("Error clearing cookie:", err);
+        }
+       }
     })),
     {
       name: "auth-storage", // localStorage key

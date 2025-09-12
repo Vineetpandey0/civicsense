@@ -168,7 +168,7 @@ function LoginPage() {
             setCanLogin(true)
             const { official, token } = response.data.data;
 
-            // ✅ set login details in Zustand store
+            // set login details in Zustand store
             const setLogin = useAuthStore.getState().setLogin;
             setLogin({
                 id: official._id.toString(),
@@ -201,7 +201,7 @@ function LoginPage() {
     };
 
     return (
-        <div className="p-20 w-screen flex justify-center gap-6  items-center">
+        <div className="p-20 w-screen flex justify-center gap-10 ">
 
             {!canSetPassword && !canLogin && (
                 <Card className="sm:w-1/3 w-full  text-center sm:shadow-xl shadow-none border-none ">
@@ -401,17 +401,7 @@ function LoginPage() {
                 </Card>
             )}
 
-            <p className="text-gray-600 text-sm leading-relaxed space-y-2">
-                <span className="block font-semibold text-gray-800">How to Login / लॉगिन कैसे करें?</span>
-                <br />
-                1️⃣ Enter your <b>Government ID (GovID)</b> <span className="text-gray-500">/ अपना सरकारी आईडी डालें</span>
-                <br />
-                2️⃣ Use your <b>Official Email</b> <span className="text-gray-500">/ आधिकारिक ईमेल डालें</span>
-                <br />
-                3️⃣ Set a secure <b>Password</b> <span className="text-gray-500">/ पासवर्ड सेट करें</span>
-                <br />
-                ✅ Keep these details safe <span className="text-gray-500">/ इन्हें सुरक्षित रखें</span>
-            </p>
+            
 
 
         </div>
