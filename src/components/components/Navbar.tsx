@@ -32,7 +32,7 @@ function Navbar() {
 
       {/* Desktop Nav */}
       <nav className="hidden sm:flex items-center gap-6 text-md font-medium">
-        {navItems.map((item) => (
+        {navItems.map((item:any) => (
           <Link
             key={item.href}
             href={item.href}
@@ -59,7 +59,7 @@ function Navbar() {
             <SheetTitle className="text-lg font-bold text-gray-900">Menu</SheetTitle>
           </SheetHeader>
           <nav className="mt-4 flex flex-col gap-3 text-gray-700">
-            {navItems.map((item) => (
+            {navItems.map((item:any) => (
               <Link
                 key={item.href}
                 href={item.href}
