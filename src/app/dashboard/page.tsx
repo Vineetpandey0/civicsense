@@ -20,7 +20,7 @@ function Dashboard() {
   const recentActivities = useMemo(() => {
     if (!escalationLogs || escalationLogs.length === 0) return []
 
-    let activities: any[] = []
+    const activities: any[] = []
     escalationLogs.forEach((log: any) => {
       if (Array.isArray(log.note)) {
         log.note.forEach((n: any) => {
