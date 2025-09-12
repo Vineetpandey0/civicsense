@@ -3,8 +3,6 @@
 import React, { useEffect } from "react";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useRouter } from "next/navigation";
-import { useComplaintStore } from "@/store/complaintStore";
-import { useEscalationLogStore } from "@/store/escalationLog";
 
 function Profile() {
   const name = useAuthStore((state) => state.name);
@@ -15,8 +13,6 @@ function Profile() {
   const lastLogin = useAuthStore((state) => state.last_login);
 
   const logout = useAuthStore((state) => state.logout);
-  const clearComplaints = useComplaintStore((state) => state.clearComplaints);
-  const clearEscalationLogs = useEscalationLogStore((state) => state.clearEscalationLogs);
   const router = useRouter();
 
   const logoutUser = () => {
@@ -94,8 +90,9 @@ function Profile() {
                       Last Login
                     </label>
                     <p className="mt-1 text-base text-gray-900 font-semibold">
-                      {lastLogin || "Not available"}
+                      {lastLogin instanceof Date ? lastLogin.toLocaleString() : lastLogin || "Not available"}
                     </p>
+
                   </div>
                 </div>
 
