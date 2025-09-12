@@ -9,12 +9,18 @@ import { usePathname } from "next/navigation"  // for active route
 
 function Navbar() {
   const pathname = usePathname()
+  const token = localStorage.getItem("auth-storage")
+  const isLoggedIn = token && token !== "undefined" && token !== "null"
 
-  const navItems = [
-    { href: "/dashboard", label: "Dashboard" },
-    { href: "/complaints", label: "Complaints" },
-    { href: "/profile", label: "Profile" },
-  ]
+  
+  let navItems:any = []
+  if (isLoggedIn) {
+    navItems = [
+      { href: "/dashboard", label: "Dashboard" },
+      { href: "/complaints", label: "Complaints" },
+      { href: "/profile", label: "Profile" },
+    ]
+  }
 
   return (
     <header className="flex items-center justify-between whitespace-nowrap border-b border-gray-200 px-6 py-6 bg-white shadow-sm">
